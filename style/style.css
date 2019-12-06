@@ -71,7 +71,8 @@ body {
 }
 
 .reset:hover {
-	background-color: rgba(227, 134, 146, 0.8);
+	background-color: rgba(227, 134, 146, 0.5);
+	cursor: pointer;
 }
 
 .chart {
@@ -239,6 +240,7 @@ body {
 
 .score_controller_add:hover {
 	background-color: #555;
+	cursor: pointer;
 }
 
 .score_controller_sub {
@@ -255,4 +257,5 @@ body {
 
 .score_controller_sub:hover {
 	background-color: #555;
+	cursor: pointer;
 }
