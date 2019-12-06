@@ -29,7 +29,7 @@ var chartData = {
 	}
 
 	var localArr = JSON.parse(localStorage.getItem('scoreboard'));
-	if (localArr.length === 10) chartData.datasets[0].data = localArr;
+	if (localArr != null && localArr.length === 10) chartData.datasets[0].data = localArr;
 
 	var cWidth = 300;
 	var cHeight = cWidth * (window.innerHeight * 0.65) / window.innerWidth;
