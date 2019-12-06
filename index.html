@@ -6,35 +6,18 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>なにかしらのタイトル</title>
-	<meta name="description" content="">
-	<meta name="keywords" content=",,,,,">
-	<meta name="author" content="">
+	<meta name="author" content="🐈">
 	<meta property="og:site_name" content="">
 	<meta property="og:type" content="website">
 	<meta property="og:locale" content="ja_JP">
-	<meta property="og:description" content="">
-	<meta property="og:url" content="">
-	<meta name="twitter:card" content="summary">
-	<meta name="twitter:site" content="">
-	<meta name="twitter:image" content="">
-	<link rel="canonical" href="">
-	<link rel="icon" type="image/png" href="./favicon.ico">
-	<!--ファビコン-->
-	<link rel="apple-touch-icon" href="./favicon.ico">
-	<!--[if lt IE 9]>
-	<script src="//cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js" defer></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" defer></script>
-	<![endif]-->
-	<!--
-	<meta name="mobile-web-app-capable" content="yes">
-	<link rel="icon" sizes="196x196" href="">
-	<link rel="apple-touch-icon" sizes="152x152" href="">
-	-->
 
-	<script src="./chartjs/Chart.js"></script>
+	<link rel="icon" type="image/png" href="./favicon.ico">
+	<link rel="apple-touch-icon" href="./favicon.ico">
+
+	<script src="./js/chartjs/Chart.js"></script>
+	<script src="./js/numeraljs/numeral.min.js"></script>
 	<script src="./js/jquery-3.4.1.min.js"></script>
-	<script src="./js/scripts.js"></script>
-	<link rel="stylesheet" href="./style/grid.css">
+	<link rel="stylesheet" href="./style/style.css">
 </head>
 
 <body>
@@ -49,158 +32,10 @@
 						<canvas id="canvas"></canvas>
 					</div>
 				</div>
-				<div class="scores score1">
-					<div class="team_name_outer">
-						<div class="team_name">A</div>
-					</div>
-				</div>
-
-				<div class="scores score2">
-					<div class="team_name_outer">
-						<div class="team_name">B</div>
-					</div>
-				</div>
-
-				<div class="scores score3">
-					<div class="team_name_outer">
-						<div class="team_name">C</div>
-					</div>
-				</div>
-
-				<div class="scores score4">
-					<div class="team_name_outer">
-						<div class="team_name">D</div>
-					</div>
-				</div>
-
-				<div class="scores score5">
-					<div class="team_name_outer">
-						<div class="team_name">E</div>
-					</div>
-				</div>
-
-				<div class="scores score6">
-					<div class="team_name_outer">
-						<div class="team_name">F</div>
-					</div>
-				</div>
-
-				<div class="scores score7">
-					<div class="team_name_outer">
-						<div class="team_name">G</div>
-					</div>
-				</div>
-
-				<div class="scores score8">
-					<div class="team_name_outer">
-						<div class="team_name">H</div>
-					</div>
-				</div>
-
-				<div class="scores score9">
-					<div class="team_name_outer">
-						<div class="team_name">I</div>
-					</div>
-				</div>
-
-				<div class="scores score10">
-					<div class="team_name_outer">
-						<div class="team_name">J</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
-	<script>
-		$('div.scores').each(function (i) {
-			var cls = $(this).prop('class').replace('scores ', '');
-			var insert = [
-				'<div class="score_outer">',
-				'<div class="score" id="' + cls + '">0</div>',
-				'</div>',
-				'<div class="score_controller_outer">',
-				'<div class="score_controller_sub" onClick="subScore(' + "'" + cls + "'" + ')"></div>',
-				'<div class="score_controller_add" onClick="addScore(' + "'" + cls + "'" + ')"></div>',
-				'</div>'
-			].join("");
-			$(this).append(insert);
-		});
-
-		var chartData = {
-			labels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
-			datasets: [{
-				label: 'Scores',
-				borderWidth: 1,
-				data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-				backgroundColor: [
-					'rgba(227, 134, 146, 0.8)',
-					'rgba(246, 213, 128, 0.8)',
-					'rgba(207, 226, 131, 0.8)',
-					'rgba(129, 214, 116, 0.8)',
-					'rgba(100, 201, 155, 0.8)',
-					'rgba(104, 207, 195, 0.8)',
-					'rgba(107, 190, 213, 0.8)',
-					'rgba(139, 167, 213, 0.8)',
-					'rgba(164, 169, 207, 0.8)',
-					'rgba(219, 123, 177, 0.8)'
-				],
-			}]
-		};
-		window.onload = function () {
-			var ctx = document.getElementById('canvas').getContext('2d');
-			ctx.canvas.width = 300;
-			ctx.canvas.height = 95;
-			window.bar = new Chart(ctx, {
-				type: 'bar',
-				data: chartData,
-				options: {
-					responsive: true,
-					legend: {
-						display: false,
-					},
-					title: {
-						display: false,
-					},
-					scales: {
-						yAxes: [{
-							ticks: {
-								suggestedMax: 5,
-								suggestedMin: 0,
-								stepSize: 1
-							}
-						}]
-					},
-				}
-			});
-		};
-
-		function subScore(scoreNo) {
-			var currentScore = document.getElementById(scoreNo);
-			var score = Number(currentScore.textContent);
-			var idx = Number(scoreNo.replace('score', '')) - 1;
-			console.log(idx);
-
-			if (score !== 0) {
-				score--;
-				document.getElementById(scoreNo).textContent = String(score);
-			}
-
-			chartData.datasets[0].data[idx] = score;
-			window.bar.update();
-		}
-
-		function addScore(scoreNo) {
-			var currentScore = document.getElementById(scoreNo);
-			var score = Number(currentScore.textContent);
-			var idx = Number(scoreNo.replace('score', '')) - 1;
-
-			score++;
-			document.getElementById(scoreNo).textContent = String(score);
-
-			chartData.datasets[0].data[idx] = score;
-			window.bar.update();
-		}
-	</script>
+	<script src="./js/scripts.js"></script>
 </body>
 
 </html>
