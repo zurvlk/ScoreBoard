@@ -15,15 +15,11 @@ var chartData = {
 			'rgba(139, 167, 213, 0.8)',
 			'rgba(164, 169, 207, 0.8)',
 			'rgba(219, 123, 177, 0.8)'
-		],
+		]
 	}]
 };
 
-
 (function () {
-	genScoreList();
-	refreshRank();
-
 	var agent = window.navigator.userAgent.toLowerCase();
 	var chrome = (agent.indexOf('chrome') !== -1) && (agent.indexOf('edge') === -1) && (agent.indexOf('opr') === -1);
 	var firefox = (agent.indexOf('firefox') !== -1);
@@ -32,6 +28,8 @@ var chartData = {
 		alert('PC版ChromeとFirefox以外は未対応です。\nデザインが崩れる可能性があります。');
 	}
 
+	var localArr = JSON.parse(localStorage.getItem('scoreboard'));
+	if (localArr.length === 10) chartData.datasets[0].data = localArr;
 
 	var cWidth = 300;
 	var cHeight = cWidth * (window.innerHeight * 0.65) / window.innerWidth;
@@ -77,7 +75,8 @@ var chartData = {
 			}
 		});
 	};
-
+	genScoreList();
+	refreshRank();
 }());
 
 function genScoreList() {
@@ -91,7 +90,6 @@ function genScoreList() {
 			'</div>',
 			'</div>',
 		].join('');
-		console.log(insert);
 		$('div.grid-container').append(insert);
 	}
 
@@ -99,7 +97,7 @@ function genScoreList() {
 		var cls = $(this).prop('class').replace('scores ', '');
 		var insert = [
 			'<div class="score_outer">',
-			'<div class="score" id="' + cls + '">0</div>',
+			'<div class="score" id="' + cls + '">' + chartData.datasets[0].data[i] + '</div>',
 			'</div>',
 
 			'<div class="rank_outer">',
@@ -119,7 +117,6 @@ function subScore(scoreNo) {
 	var currentScore = document.getElementById(scoreNo);
 	var score = Number(currentScore.textContent);
 	var idx = Number(scoreNo.replace('score', '')) - 1;
-	console.log(idx);
 
 	if (score !== 0) {
 		score--;
@@ -150,14 +147,29 @@ function refreshRank() {
 	var sorted = scores.slice(0, scores.length).sort(function (a, b) {
 		return b - a;
 	});
-	console.log(sorted);
 
 	scores.forEach((elem, idx, arr) => {
 		const findRank = (element) => element === elem;
 		var rank = sorted.findIndex(findRank) + 1;
 		document.getElementById('rank_score' + String(idx + 1)).textContent = numeral(rank).format('0o');
 	});
+
+	localStorage.setItem('scoreboard', JSON.stringify(chartData.datasets[0].data));
 }
+
+function reset() {
+	localStorage.removeItem('scoreboard');
+	var initArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	chartData.datasets[0].data = initArr;
+
+	for (var i = 0; i < 10; i++) {
+		document.getElementById('score' + Number(i + 1)).textContent = chartData.datasets[0].data[i];
+	}
+
+	refreshRank();
+	window.bar.update();
+}
+
 
 function Range(first, last) {
 	var f = first.charCodeAt(0);
